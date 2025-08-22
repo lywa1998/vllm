@@ -23,6 +23,7 @@ from vllm.transformers_utils.configs.nemotron import NemotronConfig
 from vllm.transformers_utils.configs.nemotron_h import NemotronHConfig
 from vllm.transformers_utils.configs.nemotron_vl import Nemotron_Nano_VL_Config
 from vllm.transformers_utils.configs.ovis import OvisConfig
+from vllm.transformers_utils.configs.qwen2_5_omni_thinker import Qwen2_5OmniThinkerConfig
 from vllm.transformers_utils.configs.speculators.base import SpeculatorsConfig
 from vllm.transformers_utils.configs.step3_vl import (Step3TextConfig,
                                                       Step3VisionEncoderConfig,
@@ -44,6 +45,7 @@ __all__ = [
     "Nemotron_Nano_VL_Config",
     "OvisConfig",
     "SpeculatorsConfig",
+    "Qwen2_5OmniThinkerConfig",
     "UltravoxConfig",
     "Step3VLConfig",
     "Step3VisionEncoderConfig",
