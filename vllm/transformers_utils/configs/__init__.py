@@ -33,6 +33,7 @@ from vllm.transformers_utils.configs.ovis import OvisConfig
 from vllm.transformers_utils.configs.qwen2_5_omni_thinker import Qwen2_5OmniThinkerConfig
 from vllm.transformers_utils.configs.qwen3_next import Qwen3NextConfig
 from vllm.transformers_utils.configs.radio import RadioConfig
+from vllm.transformers_utils.configs.qwen2_5_omni_thinker import Qwen2_5OmniThinkerConfig
 from vllm.transformers_utils.configs.speculators.base import SpeculatorsConfig
 from vllm.transformers_utils.configs.step3_vl import (
     Step3TextConfig,

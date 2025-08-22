@@ -37,6 +37,21 @@ from vllm.transformers_utils.utils import (
     check_gguf_file,
     parse_safetensors_file_metadata,
 )
+# yapf conflicts with isort for this block
+# yapf: disable
+# from vllm.transformers_utils.configs import (ChatGLMConfig, DeepseekVLV2Config,
+#                                              EAGLEConfig, JAISConfig,
+#                                              KimiVLConfig, MedusaConfig,
+#                                              MLPSpeculatorConfig,
+#                                              Nemotron_Nano_VL_Config,
+#                                              NemotronConfig, OvisConfig,
+#                                              Qwen2_5OmniThinkerConfig,
+#                                              RWConfig, SpeculatorsConfig,
+#                                              Step3TextConfig, Step3VLConfig,
+#                                              UltravoxConfig)
+# yapf: enable
+# from vllm.transformers_utils.configs.mistral import adapt_config_dict
+# from vllm.transformers_utils.utils import check_gguf_file
 
 if envs.VLLM_USE_MODELSCOPE:
     from modelscope import AutoConfig
@@ -95,6 +110,25 @@ _CONFIG_REGISTRY: dict[str, type[PretrainedConfig]] = LazyConfigDict(
     qwen3_next="Qwen3NextConfig",
     lfm2_moe="Lfm2MoeConfig",
 )
+# _CONFIG_REGISTRY: dict[str, type[PretrainedConfig]] = {
+#     "chatglm": ChatGLMConfig,
+#     "deepseek_vl_v2": DeepseekVLV2Config,
+#     "kimi_vl": KimiVLConfig,
+#     "Llama_Nemotron_Nano_VL": Nemotron_Nano_VL_Config,
+#     "RefinedWeb": RWConfig,  # For tiiuae/falcon-40b(-instruct)
+#     "RefinedWebModel": RWConfig,  # For tiiuae/falcon-7b(-instruct)
+#     "jais": JAISConfig,
+#     "mlp_speculator": MLPSpeculatorConfig,
+#     "medusa": MedusaConfig,
+#     "eagle": EAGLEConfig,
+#     "speculators": SpeculatorsConfig,
+#     "nemotron": NemotronConfig,
+#     "ovis": OvisConfig,
+#     "qwen2_5_omni_thinker": Qwen2_5OmniThinkerConfig,
+#     "ultravox": UltravoxConfig,
+#     "step3_vl": Step3VLConfig,
+#     "step3_text": Step3TextConfig,
+# }
 
 _CONFIG_ATTRS_MAPPING: dict[str, str] = {
     "llm_config": "text_config",
