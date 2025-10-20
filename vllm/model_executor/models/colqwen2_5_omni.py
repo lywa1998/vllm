@@ -5,7 +5,6 @@ import torch.nn as nn
 
 from vllm.config import VllmConfig
 from vllm.multimodal import MULTIMODAL_REGISTRY
-from vllm.model_executor import SamplingMetadata
 
 from .utils import AutoWeightsLoader, WeightsMapper
 
@@ -16,31 +15,9 @@ from vllm.model_executor.models.qwen2_5_omni_thinker import (
     Qwen2_5OmniThinkerProcessingInfo,
 )
 from vllm.model_executor.layers.linear import ColumnParallelLinear
-from vllm.model_executor.layers.pooler import DispatchPooler, Pooler, PoolingType, PoolingMethod, PoolingTask, PoolingMetadata, PoolingParamsUpdate, build_output
+from vllm.model_executor.layers.pooler import AllPooler, PoolerHead, PoolerIdentity
 from vllm.sequence import IntermediateTensors
 from transformers.models.qwen2_5_omni.configuration_qwen2_5_omni import Qwen2_5OmniThinkerConfig
-
-class ColQwen2_5OmniPooler(Pooler):
-    def __init__(self, config: Qwen2_5OmniThinkerConfig):
-        super().__init__()
-
-        pooling_type = PoolingType.ALL
-        self.pooling = PoolingMethod.from_pooling_type(pooling_type)
-
-    def get_supported_tasks(self) -> Set[PoolingTask]:
-        return {"embed"}
-
-    def get_pooling_updates(self, task: PoolingTask) -> PoolingParamsUpdate:
-        return self.pooling.get_pooling_updates(task)
-
-    def forward(
-        self,
-        hidden_states: Union[torch.Tensor, list[torch.Tensor]],
-        pooling_metadata: PoolingMetadata,
-    ) -> Union[torch.Tensor, list[torch.Tensor]]:
-        pooled_output = self.pooling(hidden_states, pooling_metadata)
-
-        return build_output(pooled_output) 
 
 
 @MULTIMODAL_REGISTRY.register_processor(
@@ -48,7 +25,7 @@ class ColQwen2_5OmniPooler(Pooler):
     info=Qwen2_5OmniThinkerProcessingInfo,
     dummy_inputs=Qwen2_5OmniThinkerDummyInputsBuilder
 )
-class ColQwen2_5Omni(Qwen2_5OmniThinkerForConditionalGeneration):
+class ColQwen2_5OmniForRewardModeling(Qwen2_5OmniThinkerForConditionalGeneration):
     hf_to_vllm_mapper = WeightsMapper(
         orig_to_new_prefix={
             "audio_tower.": "audio_tower.",
@@ -75,15 +52,7 @@ class ColQwen2_5Omni(Qwen2_5OmniThinkerForConditionalGeneration):
         self.make_empty_intermediate_tensors = (
             self.language_model.make_empty_intermediate_tensors)
 
-        self.pooler = ColQwen2_5OmniPooler(self.config)
-        pooler_config = vllm_config.model_config.pooler_config
-        if pooler_config is not None:
-            self.pooler = DispatchPooler({
-                "embed":
-                Pooler.for_encode(pooler_config),
-                "embed":
-                ColQwen2_5OmniPooler(vllm_config.model_config.hf_config.thinker_config),
-            })
+        self.pooler = AllPooler(PoolerHead(PoolerIdentity()))
 
     def forward(
         self,
@@ -107,17 +76,8 @@ class ColQwen2_5Omni(Qwen2_5OmniThinkerForConditionalGeneration):
     def compute_logits(
         self,
         hidden_states: torch.Tensor,
-        sampling_metadata: SamplingMetadata
     ) -> Optional[torch.Tensor]:
         # For embedding models, we don't compute logits
-        return None
-
-    def sample(
-        self,
-        logits: torch.Tensor,
-        sampling_metadata: SamplingMetadata,
-    ) -> Optional[torch.Tensor]:
-        # For embedding models, we don't need to sample
         return None
 
     def load_weights(self, weights: Iterable[Tuple[str,

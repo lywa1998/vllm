@@ -209,7 +209,6 @@ _EMBEDDING_MODELS = {
     ),
     "Phi3VForCausalLM": ("phi3v", "Phi3VForCausalLM"),
     "Qwen2VLForConditionalGeneration": ("qwen2_vl", "Qwen2VLForConditionalGeneration"),  # noqa: E501
-    "ColQwen2_5Omni": ("colqwen2_5_omni", "ColQwen2_5Omni"),
     # Technically Terratorch models work on images, both in
     # input and output. I am adding it here because it piggy-backs on embedding
     # models for the time being.
@@ -356,7 +355,10 @@ _MULTIMODAL_MODELS = {
         "qwen2_5_omni_thinker",
         "Qwen2_5OmniThinkerForConditionalGeneration",
     ),  # noqa: E501
-    "ColQwen2_5Omni": ("colqwen2_5_omni", "ColQwen2_5Omni"),
+    "ColQwen2_5OmniForRewardModeling": (
+        "colqwen2_5_omni", 
+        "ColQwen2_5OmniForRewardModeling"
+    ),
     "Qwen3OmniMoeForConditionalGeneration": (
         "qwen3_omni_moe_thinker",
         "Qwen3OmniMoeThinkerForConditionalGeneration",
