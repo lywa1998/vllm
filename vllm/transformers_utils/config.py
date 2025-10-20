@@ -109,26 +109,8 @@ _CONFIG_REGISTRY: dict[str, type[PretrainedConfig]] = LazyConfigDict(
     step3_text="Step3TextConfig",
     qwen3_next="Qwen3NextConfig",
     lfm2_moe="Lfm2MoeConfig",
+    qwen2_5_omni_thinker="Qwen2_5OmniThinkerConfig",
 )
-# _CONFIG_REGISTRY: dict[str, type[PretrainedConfig]] = {
-#     "chatglm": ChatGLMConfig,
-#     "deepseek_vl_v2": DeepseekVLV2Config,
-#     "kimi_vl": KimiVLConfig,
-#     "Llama_Nemotron_Nano_VL": Nemotron_Nano_VL_Config,
-#     "RefinedWeb": RWConfig,  # For tiiuae/falcon-40b(-instruct)
-#     "RefinedWebModel": RWConfig,  # For tiiuae/falcon-7b(-instruct)
-#     "jais": JAISConfig,
-#     "mlp_speculator": MLPSpeculatorConfig,
-#     "medusa": MedusaConfig,
-#     "eagle": EAGLEConfig,
-#     "speculators": SpeculatorsConfig,
-#     "nemotron": NemotronConfig,
-#     "ovis": OvisConfig,
-#     "qwen2_5_omni_thinker": Qwen2_5OmniThinkerConfig,
-#     "ultravox": UltravoxConfig,
-#     "step3_vl": Step3VLConfig,
-#     "step3_text": Step3TextConfig,
-# }
 
 _CONFIG_ATTRS_MAPPING: dict[str, str] = {
     "llm_config": "text_config",
